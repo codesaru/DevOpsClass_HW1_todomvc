@@ -16,11 +16,11 @@ pipeline {
     stage('Cleaning up environment') {
       steps {
         sh 'echo "Stopping $containerAppName"......' 
-        sh "docker stop $containerAppName"
+        sh "docker ps -f name=$containerAppName -q | xargs --no-run-if-empty docker container stop"
         sh 'echo "Removing container $containerAppName"......'
-        sh "docker rm -f $containerAppName"
+        sh "docker container ls -a -fname=$containerAppName -q | xargs -r docker container rm"
         sh 'echo "Removing image $dockerImage"......'
-        sh "docker rmi -f $dockerImage"
+        sh 'docker images -f "reference=$dockerImage" -q | xargs -r docker rmi'
       }
     }
     stage('Build Docker image') {
