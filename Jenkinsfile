@@ -1,10 +1,10 @@
 pipeline {
 
   environment {
-    registry = "codesarukiller/devops_class"
+    registry = "codesarukiller/devops_hw1"
     registryCredential = 'jenkins_dockerhub'
-    dockerImage = 'hw1'
-    containerAppName = "${dockerImage}_app"
+    dockerImage = ''
+    containerAppName = "${registry}_app"
   }
   agent any
   stages {
@@ -26,8 +26,24 @@ pipeline {
     stage('Build Docker image') {
       steps {
         script {
-          dockerImage = docker.build(registry+dockerImage)
+          dockerImage = docker.build(registry)
         }
+      }
+    }
+    stage('Push to DockerHub') {
+      steps {
+        script {
+          docker.withRegistry('', registryCredential) {
+             dockerImage.push('latest')
+             dockerImage.push("$BUILD_NUMBER")
+          }
+        }
+      }
+    }
+    stage('Remove image') {
+      steps {
+        sh 'echo "Removing image $dockerImage"......'
+        sh 'docker images -f "reference=$dockerImage" -q | xargs -r docker rmi'
       }
     }
   }
