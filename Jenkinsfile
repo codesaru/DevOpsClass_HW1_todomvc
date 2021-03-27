@@ -16,7 +16,7 @@ pipeline {
     stage('Cleaning up environment') {
       steps {
         sh 'echo "Stopping $containerAppName"......' 
-        sh "docker stop $conatinerAppName"
+        sh "docker stop $containerAppName"
         sh 'echo "Removing container $containerAppName"......'
         sh "docker rm -f $containerAppName"
         sh 'echo "Removing image $dockerImage"......'
