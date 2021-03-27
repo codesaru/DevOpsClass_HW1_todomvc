@@ -4,7 +4,7 @@ pipeline {
     registry = "codesarukiller/devops_class"
     registryCredential = 'jenkins_dockerhub'
     dockerImage = 'hw1'
-    containerAppName = dockerImage + "_app"
+    containerAppName = "${dockerImage}_app"
   }
   agent any
   stages {
