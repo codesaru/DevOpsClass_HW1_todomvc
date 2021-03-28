@@ -10,7 +10,7 @@ pipeline {
   }
   agent any
   stages {
-/*    stage('Cloning repo') {
+    stage('Cloning repo') {
       steps {
           checkout scm
       }
@@ -48,7 +48,6 @@ pipeline {
         sh 'docker images -f "reference=$registry" -q | xargs -r docker rmi -f'
       }
     }
-*/
     stage('Pull from DockerHub and run locally') {
       steps {
         script {
