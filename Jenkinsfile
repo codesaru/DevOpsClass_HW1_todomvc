@@ -20,7 +20,7 @@ pipeline {
         sh 'echo "Removing container $containerAppName"......'
         sh "docker container ls -a -fname=$containerAppName -q | xargs -r docker container rm"
         sh 'echo "Removing image $registry"......'
-        sh 'docker images -f "reference=$registry" -q | xargs -r docker rmi'
+        sh 'docker images -f "reference=$registry" -q | xargs -r docker rmi -f'
       }
     }
     stage('Build Docker image') {
@@ -43,7 +43,7 @@ pipeline {
     stage('Remove image') {
       steps {
         sh 'echo "Removing image $registry"......'
-        sh 'docker images -f "reference=$registry" -q | xargs -r docker rmi'
+        sh 'docker images -f "reference=$registry" -q | xargs -r docker rmi -f'
       }
     }
     stage('Pull from DockerHub and run locally') {
