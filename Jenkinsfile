@@ -19,8 +19,8 @@ pipeline {
         sh "docker ps -f name=$containerAppName -q | xargs --no-run-if-empty docker container stop"
         sh 'echo "Removing container $containerAppName"......'
         sh "docker container ls -a -fname=$containerAppName -q | xargs -r docker container rm"
-        sh 'echo "Removing image $dockerImage"......'
-        sh 'docker images -f "reference=$dockerImage" -q | xargs -r docker rmi'
+        sh 'echo "Removing image $registry"......'
+        sh 'docker images -f "reference=$registry" -q | xargs -r docker rmi'
       }
     }
     stage('Build Docker image') {
@@ -42,8 +42,18 @@ pipeline {
     }
     stage('Remove image') {
       steps {
-        sh 'echo "Removing image $dockerImage"......'
-        sh 'docker images -f "reference=$dockerImage" -q | xargs -r docker rmi'
+        sh 'echo "Removing image $registry"......'
+        sh 'docker images -f "reference=$registry" -q | xargs -r docker rmi'
+      }
+    }
+    stage('Pull from DockerHub and run locally') {
+      steps {
+        script {
+          docker.withRegistry('', registryCredential) {
+            image = docker.image(registry)
+            image.pull().run("-itd -p 3000:3000 --name $containerAppName")
+          }
+        }
       }
     }
   }
