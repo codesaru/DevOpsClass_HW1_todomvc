@@ -1,10 +1,12 @@
 pipeline {
 
   environment {
-    registry = "codesarukiller/devops_hw1"
+    dockerHubUser = "codesarukiller"
+    dockerRepo = "devops_hw1"
+    registry = "${dockerHubUser}/${dockerRepo}"
     registryCredential = 'jenkins_dockerhub'
     dockerImage = ''
-    containerAppName = "${registry}_app"
+    containerAppName = "${dockerRepo}_app"
   }
   agent any
   stages {
