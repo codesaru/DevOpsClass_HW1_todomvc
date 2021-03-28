@@ -4,7 +4,7 @@ import TodoTextInput from './TodoTextInput'
 
 const Header = ({ addTodo }) => (
   <header className="header">
-    <h1>Alice&aposs Todos</h1>
+    <h1>Alice&apos;s Todos</h1>
     <TodoTextInput
       newTodo
       onSave={(text) => {
